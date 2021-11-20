@@ -1,13 +1,16 @@
 import urllib.request
 from bs4 import BeautifulSoup
-
 from article import Article
 
+
 class WebScraper:
+
+    articlesDictionary = {}
 
     def connect(self, url):
         self.source = urllib.request.urlopen(url)
         self.soup = BeautifulSoup(self.source, 'html.parser')
+
         return self.soup
 
 
@@ -18,19 +21,20 @@ class WebScraper:
 
         for i in range(len(titles)):
             title = titles[i].text
+            title = title.strip()
             link = links[i].attrs['href']
             if ("https://www.bbc.com" in links[i].attrs['href']):
                 link = links[i].attrs['href']
             else:
                 link = url + link
 
-            if link in articlesDictionary:
+            if link in self.articlesDictionary:
                 continue;
             else:
                 scraperToArticleContent = WebScraper().scrapeContent(link)
-                articlesDictionary[link] = Article(title, link, scraperToArticleContent)
+                self.articlesDictionary[link] = Article(title, link, scraperToArticleContent)
 
-        return articlesDictionary
+        return self.articlesDictionary
 
 
     def scrapeContent(self, url):
@@ -39,16 +43,6 @@ class WebScraper:
         contentString = ""
         for c in content:
             contentString = contentString + " " + c.getText()
+
         return contentString
 
-
-
-articlesDictionary = {}
-
-
-url = "https://www.bbc.com"
-scraper = WebScraper()
-articlesDictionary = scraper.scrapeArticle(url)
-
-
-h=0
