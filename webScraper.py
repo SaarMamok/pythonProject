@@ -1,6 +1,8 @@
+import sys
 import urllib.request
 from bs4 import BeautifulSoup
 from article import Article
+import multiprocessing as mp
 
 
 class WebScraper:
@@ -45,4 +47,5 @@ class WebScraper:
             contentString = contentString + " " + c.getText()
 
         return contentString
+
 
