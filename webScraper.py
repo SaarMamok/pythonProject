@@ -2,6 +2,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 from article import Article
 import json
+from flight import Flight
 
 class WebScraper:
 
@@ -70,19 +71,40 @@ class WebScraper:
         oddRowFromTable = self.soup.findAll("td", {"class": "smallrow1"})
         evenRowFromTable = self.soup.findAll("td", {"class": "smallrow2"})
 
-        dataArrayForFlights = []
-        flightsNumber =[]
-        planeTypes = []
-        arrives = []
-        departingTimes = []
-        landingTimes = []
-
+        dataListForFlights = []
         maxLength = max(len(oddRowFromTable), len(evenRowFromTable))
-        for i in range(0, maxLength, 5):
+        i=0
+        while i < maxLength:
+            j = i
             if i < len(oddRowFromTable):
-                dataArrayForFlights.append(oddRowFromTable[i].getText())
-            if i < len(evenRowFromTable):
-                dataArrayForFlights.append(evenRowFromTable[i].getText())
+                flightNumber = oddRowFromTable[i].getText()
+                i += 1
+                planeType = oddRowFromTable[i].getText()
+                i += 1
+                arrive = oddRowFromTable[i].getText()
+                i += 1
+                departingTime = oddRowFromTable[i].getText()
+                i += 1
+                landingTime = oddRowFromTable[i].getText()
+                flight = Flight(flightNumber, planeType, arrive, departingTime, landingTime)
+                dataListForFlights.append(flight)
+
+            if j < len(evenRowFromTable):
+                flightNumber = evenRowFromTable[j].getText()
+                j += 1
+                planeType = evenRowFromTable[j].getText()
+                j += 1
+                arrive = evenRowFromTable[j].getText()
+                j += 1
+                departingTime = evenRowFromTable[j].getText()
+                j += 1
+                landingTime = evenRowFromTable[j].getText()
+
+                flight = Flight(flightNumber, planeType, arrive, departingTime, landingTime)
+
+                dataListForFlights.append(flight)
+
+            i += 1
 
 
         h =0
@@ -91,4 +113,13 @@ class WebScraper:
 
 
 
-
+"""
+        flight1 = {
+             'flightNumber':None,
+             'planeTypes': None,
+             'arrive': None,
+             'departingTime': None,
+             'landingTime': None
+        }
+        flight1['flightNumber'] = 44
+"""

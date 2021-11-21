@@ -2,14 +2,14 @@
 class Flight:
 
     flightNumber = None
-    planeTypes = None
+    planeType = None
     arrive = None
     departingTime = None
     landingTime = None
 
-    def __init__(self, flightNumber, planeTypes, arrive, departingTime, landingTime):
+    def __init__(self, flightNumber, planeType, arrive, departingTime, landingTime):
         self.flightNumber = flightNumber
-        self.planeTypes = planeTypes
+        self.planeType = planeType
         self.arrive = arrive
         self.departingTime = departingTime
         self.landingTime = landingTime
@@ -32,8 +32,8 @@ class Flight:
     def set_flightNumber(self, flightNumber):
         self.flightNumber = flightNumber
 
-    def set_planeTypes(self, planeTypes):
-        self.planeTypes = planeTypes
+    def set_planeType(self, planeType):
+        self.planeType = planeType
 
     def set_arrive(self, arrive):
         self.arrive = arrive
