@@ -3,8 +3,7 @@ import search
 
 url = "https://www.bbc.com"
 scraper = WebScraper()
-articlesDictionary = scraper.scrapeArticle(url)
-
+articlesDictionary = scraper.scrapeArticles(url)
 
 for i in range(5):
     words = input("Please enter the words you would like to search: ")

@@ -1,60 +1,46 @@
 
 class Flight:
-    airlineCompany = None
+
     flightNumber = None
+    planeTypes = None
     arrive = None
-    terminal = None
-    scheduledTime = None
-    updatedTime = None
-    status = None
+    departingTime = None
+    landingTime = None
 
-    def __init__(self, airlineCompany, flightNumber, arrive, terminal, scheduledTime, updatedTime, status):
-        self.airlineCompany = airlineCompany
+    def __init__(self, flightNumber, planeTypes, arrive, departingTime, landingTime):
         self.flightNumber = flightNumber
+        self.planeTypes = planeTypes
         self.arrive = arrive
-        self.terminal = terminal
-        self.scheduledTime = scheduledTime
-        self.updatedTime = updatedTime
-        self.status = status
-
-    def get_airlineCompany(self):
-        return self.airlineCompany
+        self.departingTime = departingTime
+        self.landingTime = landingTime
 
     def get_flightNumber(self):
         return self.flightNumber
 
+    def get_planeTypes(self):
+        return self.planeTypes
+
     def get_arrive(self):
         return self.arrive
 
-    def get_terminal(self):
-        return self.terminal
+    def get_departingTime(self):
+        return self.departingTime
 
-    def get_scheduledTime(self):
-        return self.scheduledTime
-
-    def get_updatedTime(self):
-        return self.updatedTime
-
-    def get_status(self):
-        return self.status
-
-    def set_airlineCompany(self, airlineCompany):
-        self.airlineCompany = airlineCompany
+    def get_landingTime(self):
+        return self.landingTime
 
     def set_flightNumber(self, flightNumber):
         self.flightNumber = flightNumber
 
+    def set_planeTypes(self, planeTypes):
+        self.planeTypes = planeTypes
+
     def set_arrive(self, arrive):
         self.arrive = arrive
 
-    def set_terminal(self, terminal):
-        self.terminal = terminal
+    def set_departingTime(self, departingTime):
+        self.departingTime = departingTime
 
-    def set_scheduledTime(self, scheduledTime):
-        self.scheduledTime = scheduledTime
+    def set_landingTime(self, landingTime):
+        self.landingTime = landingTime
 
-    def set_updatedTime(self, updatedTime):
-        self.updatedTime = updatedTime
-
-    def set_status(self, status):
-        self.status = status

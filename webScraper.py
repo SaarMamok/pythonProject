@@ -1,10 +1,12 @@
 import urllib.request
 from bs4 import BeautifulSoup
 from article import Article
+import json
 
 class WebScraper:
 
     articlesDictionary = {}
+    jsonFlight = json
 
     def connect(self, url):
         """
@@ -18,7 +20,7 @@ class WebScraper:
         return self.soup
 
 
-    def scrapeArticle(self, url):
+    def scrapeArticles(self, url):
         """
         A function that extracts the articles from a website and saves them in a dictionary.
         key: link (url)
@@ -42,13 +44,13 @@ class WebScraper:
             if link in self.articlesDictionary:
                 continue;
             else:
-                scraperToArticleContent = WebScraper().scrapeContent(link)
+                scraperToArticleContent = WebScraper().scrapeArticleContent(link)
                 self.articlesDictionary[link] = Article(title, link, scraperToArticleContent)
 
         return self.articlesDictionary
 
 
-    def scrapeContent(self, url):
+    def scrapeArticleContent(self, url):
         """
         A function that extracts the content of a specific article.
         url -- Link of a specific article.
@@ -61,4 +63,32 @@ class WebScraper:
             contentString = contentString + " " + c.getText()
 
         return contentString
+
+    def scrapeFlights(self, url):
+
+        self.connect(url)
+        oddRowFromTable = self.soup.findAll("td", {"class": "smallrow1"})
+        evenRowFromTable = self.soup.findAll("td", {"class": "smallrow2"})
+
+        dataArrayForFlights = []
+        flightsNumber =[]
+        planeTypes = []
+        arrives = []
+        departingTimes = []
+        landingTimes = []
+
+        maxLength = max(len(oddRowFromTable), len(evenRowFromTable))
+        for i in range(0, maxLength, 5):
+            if i < len(oddRowFromTable):
+                dataArrayForFlights.append(oddRowFromTable[i].getText())
+            if i < len(evenRowFromTable):
+                dataArrayForFlights.append(evenRowFromTable[i].getText())
+
+
+        h =0
+        return
+
+
+
+
 
