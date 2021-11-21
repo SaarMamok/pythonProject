@@ -1,8 +1,13 @@
 
 
-def search_words(articlesDictionary, words):
+def search_words_in_articles(articlesDictionary, words):
+    """
+    A function that searches for words in all saved articles.
+    articlesDictionary - A dictionary that holds all the saved articles.
+    words - words we would like to look for in articles.
+    """
+
     articlesDictionarySearchResult = {}
-    # words = input("Please Input Search words: ")
     words = words
     for article in articlesDictionary.values():
         title = article.get_title()
