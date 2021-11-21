@@ -1,9 +1,6 @@
-import sys
 import urllib.request
 from bs4 import BeautifulSoup
 from article import Article
-import multiprocessing as mp
-
 
 class WebScraper:
 
@@ -37,7 +34,7 @@ class WebScraper:
             title = titles[i].text
             title = title.strip()
             link = links[i].attrs['href']
-            if ("https://www.bbc.com" in links[i].attrs['href']):
+            if ("https://www.bbc.com" in links[i].attrs['href'] or "https://www.bbc.co" in links[i].attrs['href']):
                 link = links[i].attrs['href']
             else:
                 link = url + link
