@@ -1,13 +1,15 @@
 import urllib.request
+
 from bs4 import BeautifulSoup
 from article import Article
 import json
 from flight import Flight
 
+
 class WebScraper:
 
     articlesDictionary = {}
-    jsonFlight = json
+    jsonFlights = None
 
     def connect(self, url):
         """
@@ -75,51 +77,45 @@ class WebScraper:
         maxLength = max(len(oddRowFromTable), len(evenRowFromTable))
         i=0
         while i < maxLength:
+
+            flight = {
+                'flightNumber': None,
+                'planeType': None,
+                'arrive': None,
+                'departingTime': None,
+                'landingTime': None
+            }
+
             j = i
             if i < len(oddRowFromTable):
-                flightNumber = oddRowFromTable[i].getText()
+                flight['flightNumber'] = oddRowFromTable[i].getText()
                 i += 1
-                planeType = oddRowFromTable[i].getText()
+                flight['planeType'] = oddRowFromTable[i].getText()
                 i += 1
-                arrive = oddRowFromTable[i].getText()
+                flight['arrive'] = oddRowFromTable[i].getText()
                 i += 1
-                departingTime = oddRowFromTable[i].getText()
+                flight['departingTime'] = oddRowFromTable[i].getText()
                 i += 1
-                landingTime = oddRowFromTable[i].getText()
-                flight = Flight(flightNumber, planeType, arrive, departingTime, landingTime)
+                flight['landingTime'] = oddRowFromTable[i].getText()
+
                 dataListForFlights.append(flight)
 
             if j < len(evenRowFromTable):
-                flightNumber = evenRowFromTable[j].getText()
+                flight['flightNumber'] = evenRowFromTable[j].getText()
                 j += 1
-                planeType = evenRowFromTable[j].getText()
+                flight['planeType'] = evenRowFromTable[j].getText()
                 j += 1
-                arrive = evenRowFromTable[j].getText()
+                flight['arrive'] = evenRowFromTable[j].getText()
                 j += 1
-                departingTime = evenRowFromTable[j].getText()
+                flight['departingTime'] = evenRowFromTable[j].getText()
                 j += 1
-                landingTime = evenRowFromTable[j].getText()
-
-                flight = Flight(flightNumber, planeType, arrive, departingTime, landingTime)
+                flight['landingTime'] = evenRowFromTable[j].getText()
 
                 dataListForFlights.append(flight)
 
             i += 1
 
-
-        h =0
-        return
-
+        self.jsonFlights = json.dumps(dataListForFlights) # write to json
+        return self.jsonFlights
 
 
-
-"""
-        flight1 = {
-             'flightNumber':None,
-             'planeTypes': None,
-             'arrive': None,
-             'departingTime': None,
-             'landingTime': None
-        }
-        flight1['flightNumber'] = 44
-"""

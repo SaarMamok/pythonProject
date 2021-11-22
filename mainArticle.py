@@ -13,5 +13,5 @@ for i in range(5):
     else:
         print("Links to sites where the words you entered appear: ")
         flagExisting = True
-        for a in articlesDictionarySearchResult:
-            print(a)
+        for article in articlesDictionarySearchResult:
+            print(article)
