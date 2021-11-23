@@ -1,24 +1,16 @@
+from time import sleep
 from webScraper import WebScraper
-import json
 import search
 
 
 #url = "http://www.iaa.gov.il/he-IL/airports/BenGurion/Pages/OnlineFlights.aspx"
+# a web page that requests "I am not a robot" (ReCaptcha)
+# and therefore it is not possible in legal ways to extract information from the page.
+
 url = "https://he.flightaware.com/live/airport/LLBG/arrivals"
 scraper = WebScraper()
-jsonFlights = scraper.scrapeFlights(url)
 
-
-for i in range(5):
-    words = input("Please enter the words you would like to search: ")
-    searchWordsInFlights = search.search_words_in_flights(jsonFlights, words)
-    if len(searchWordsInFlights) == 0:
-        print("The words you entered in the flight database do not exist.")
-    else:
-        print("Flight details that contains the words you searched for: ")
-        flagExisting = True
-        for flight in searchWordsInFlights:
-            print(flight)
-
-
-h=0
+while True: # every one minute the json file is updated.
+    jsonFlights = scraper.scrapeFlights(url)
+    searchWordsInFlights = search.search_words_in_flights(jsonFlights)
+    sleep(60)

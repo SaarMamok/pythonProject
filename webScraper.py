@@ -1,9 +1,7 @@
 import urllib.request
-
 from bs4 import BeautifulSoup
 from article import Article
 import json
-from flight import Flight
 
 
 class WebScraper:
@@ -14,7 +12,8 @@ class WebScraper:
     def connect(self, url):
         """
         Connect function to retrieve information from a website.
-        url -- A link to the same site from which we would like to extract the information.
+        url -- a link to the same site from which we would like to extract the information.
+        returns - an object that contains all the html content.
         """
 
         self.source = urllib.request.urlopen(url)
@@ -29,6 +28,7 @@ class WebScraper:
         key: link (url)
         value: Article (object that contains a title, link, and content)
         url -- Link to the main page.
+        returns - a dictionary of articles that contains all the information of the articles (title, link, content).
         """
 
         self.connect(url)
@@ -56,7 +56,8 @@ class WebScraper:
     def scrapeArticleContent(self, url):
         """
         A function that extracts the content of a specific article.
-        url -- Link of a specific article.
+        url -- link of a specific article.
+        return - content of a specific article.
         """
 
         self.connect(url)
@@ -67,55 +68,67 @@ class WebScraper:
 
         return contentString
 
-    def scrapeFlights(self, url):
 
+    def scrapeFlights(self, url):
+        """
+        A function that extracts flight information.
+        url -- a link to the website of the flight table.
+        return - jsonFlights containing flight information.
+        """
         self.connect(url)
+
+        # The flight table (html) is divided into even and odd rows.
         oddRowFromTable = self.soup.findAll("td", {"class": "smallrow1"})
         evenRowFromTable = self.soup.findAll("td", {"class": "smallrow2"})
 
         dataListForFlights = []
         maxLength = max(len(oddRowFromTable), len(evenRowFromTable))
         i=0
+
         while i < maxLength:
-
-            flight = {
-                'flightNumber': None,
-                'planeType': None,
-                'arrive': None,
-                'departingTime': None,
-                'landingTime': None
-            }
-
             j = i
-            if i < len(oddRowFromTable):
-                flight['flightNumber'] = oddRowFromTable[i].getText()
+            if i < len(oddRowFromTable): # check that there is no deviation from the length of the list.
+                flightOddRow = {
+                    'flightNumber': None,
+                    'planeType': None,
+                    'arrive': None,
+                    'departingTime': None,
+                    'landingTime': None
+                }
+                flightOddRow['flightNumber'] = oddRowFromTable[i].getText()
                 i += 1
-                flight['planeType'] = oddRowFromTable[i].getText()
+                flightOddRow['planeType'] = oddRowFromTable[i].getText()
                 i += 1
-                flight['arrive'] = oddRowFromTable[i].getText()
+                flightOddRow['arrive'] = oddRowFromTable[i].getText()
                 i += 1
-                flight['departingTime'] = oddRowFromTable[i].getText()
+                flightOddRow['departingTime'] = oddRowFromTable[i].getText()
                 i += 1
-                flight['landingTime'] = oddRowFromTable[i].getText()
+                flightOddRow['landingTime'] = oddRowFromTable[i].getText()
 
-                dataListForFlights.append(flight)
+                dataListForFlights.append(flightOddRow)
 
-            if j < len(evenRowFromTable):
-                flight['flightNumber'] = evenRowFromTable[j].getText()
+            if j < len(evenRowFromTable): # check that there is no deviation from the length of the list.
+                flightEvenRow = {
+                    'flightNumber': None,
+                    'planeType': None,
+                    'arrive': None,
+                    'departingTime': None,
+                    'landingTime': None
+                }
+                flightEvenRow['flightNumber'] = evenRowFromTable[j].getText()
                 j += 1
-                flight['planeType'] = evenRowFromTable[j].getText()
+                flightEvenRow['planeType'] = evenRowFromTable[j].getText()
                 j += 1
-                flight['arrive'] = evenRowFromTable[j].getText()
+                flightEvenRow['arrive'] = evenRowFromTable[j].getText()
                 j += 1
-                flight['departingTime'] = evenRowFromTable[j].getText()
+                flightEvenRow['departingTime'] = evenRowFromTable[j].getText()
                 j += 1
-                flight['landingTime'] = evenRowFromTable[j].getText()
+                flightEvenRow['landingTime'] = evenRowFromTable[j].getText()
 
-                dataListForFlights.append(flight)
+                dataListForFlights.append(flightEvenRow)
 
             i += 1
 
         self.jsonFlights = json.dumps(dataListForFlights) # write to json
         return self.jsonFlights
-
 
