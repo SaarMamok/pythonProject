@@ -4,8 +4,8 @@ import json
 def search_words_in_articles(articlesDictionary):
     """
     A function that searches for words in all saved articles.
-    articlesDictionary -- A dictionary that holds all the saved articles.
-    return - articlesDictionary after filtering the search.
+    :param articlesDictionary: A dictionary that holds all the saved articles.
+    :return: articlesDictionary after filtering the search.
     """
 
     words = input("Please enter the words you would like to search: ")
@@ -33,8 +33,8 @@ def search_words_in_flights(jsonFile):
     """
     A search function for words contained in the flight database (json).
     A function that asks the user to enter the words he wants to search for
-    jsonFile -- json of all flight data
-    return - searchListForFlights after filtering the search.
+    :param jsonFile: json of all flight data
+    :return: searchListForFlights after filtering the search.
     """
 
     searchListForFlights = []

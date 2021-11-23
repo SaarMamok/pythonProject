@@ -12,8 +12,8 @@ class WebScraper:
     def connect(self, url):
         """
         Connect function to retrieve information from a website.
-        url -- a link to the same site from which we would like to extract the information.
-        returns - an object that contains all the html content.
+        :param url: a link to the same site from which we would like to extract the information.
+        :return: an object that contains all the html content.
         """
 
         self.source = urllib.request.urlopen(url)
@@ -27,8 +27,8 @@ class WebScraper:
         A function that extracts the articles from a website and saves them in a dictionary.
         key: link (url)
         value: Article (object that contains a title, link, and content)
-        url -- Link to the main page.
-        returns - a dictionary of articles that contains all the information of the articles (title, link, content).
+        :param url: Link to the main page.
+        :return: a dictionary of articles that contains all the information of the articles (title, link, content).
         """
 
         self.connect(url)
@@ -56,8 +56,8 @@ class WebScraper:
     def scrapeArticleContent(self, url):
         """
         A function that extracts the content of a specific article.
-        url -- link of a specific article.
-        return - content of a specific article.
+        :param url: link of a specific article.
+        :return: content of a specific article.
         """
 
         self.connect(url)
@@ -72,8 +72,8 @@ class WebScraper:
     def scrapeFlights(self, url):
         """
         A function that extracts flight information.
-        url -- a link to the website of the flight table.
-        return - jsonFlights containing flight information.
+        :param url: a link to the website of the flight table.
+        :return: jsonFlights containing flight information.
         """
         self.connect(url)
 
