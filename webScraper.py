@@ -1,13 +1,15 @@
 import urllib.request
 from bs4 import BeautifulSoup
 from article import Article
-import json
+from flight import Flight
+import datetime
 
 
 class WebScraper:
-
     articlesDictionary = {}
-    jsonFlights = None
+    lastFlightUpdate = datetime.datetime.now()
+    dataListForFlights = []
+    hashFlightData = None
 
     def connect(self, url):
         """
@@ -20,7 +22,6 @@ class WebScraper:
         self.soup = BeautifulSoup(self.source, 'html.parser')
 
         return self.soup
-
 
     def scrapeArticles(self, url):
         """
@@ -52,7 +53,6 @@ class WebScraper:
 
         return self.articlesDictionary
 
-
     def scrapeArticleContent(self, url):
         """
         A function that extracts the content of a specific article.
@@ -68,13 +68,85 @@ class WebScraper:
 
         return contentString
 
-
     def scrapeFlights(self, url):
         """
         A function that extracts flight information.
         :param url: a link to the website of the flight table.
         :return: jsonFlights containing flight information.
         """
+
+        if self.lastFlightUpdate > datetime.datetime.now() - datetime.timedelta(minutes=1) and len(self.dataListForFlights) != 0:
+            return self.dataListForFlights
+
+        print("Fetching data")
+        self.connect(url)
+
+        # The flight table (html) is divided into even and odd rows.
+        oddRowFromTable = self.soup.findAll("td", {"class": "smallrow1"})
+        evenRowFromTable = self.soup.findAll("td", {"class": "smallrow2"})
+
+
+
+        currentFlightHash = hash(str(oddRowFromTable)+str(evenRowFromTable))
+        if (currentFlightHash == self.hashFlightData ):
+            print("Data didn't change")
+            return self.dataListForFlights
+
+        self.hashFlightData = currentFlightHash
+
+        self.dataListForFlights = []
+        maxLength = max(len(oddRowFromTable), len(evenRowFromTable))
+        i = 0
+
+        while i < maxLength:
+            j = i
+
+            if i < len(oddRowFromTable):  # check that there is no deviation from the length of the list.
+                flightNumberOddRow = oddRowFromTable[i].getText()
+                i += 1
+                planeTypeOddRow = oddRowFromTable[i].getText()
+                i += 1
+                arriveOddRow = oddRowFromTable[i].getText()
+                i += 1
+                departingTimeOddRow = oddRowFromTable[i].getText()
+                i += 1
+                landingTimeOddRow = oddRowFromTable[i].getText()
+
+                flightOddRow = Flight(flightNumberOddRow, planeTypeOddRow, arriveOddRow, departingTimeOddRow,
+                                      landingTimeOddRow)
+                self.dataListForFlights.append(flightOddRow)
+
+            if j < len(evenRowFromTable):  # check that there is no deviation from the length of the list.
+                flightNumberEvenRow = evenRowFromTable[j].getText()
+                j += 1
+                planeTypeEvenRow = evenRowFromTable[j].getText()
+                j += 1
+                arriveEvenRow = evenRowFromTable[j].getText()
+                j += 1
+                departingTimeEvenRow = evenRowFromTable[j].getText()
+                j += 1
+                landingTimeEvenRow = evenRowFromTable[j].getText()
+
+                flightEvenRow = Flight(flightNumberEvenRow, planeTypeEvenRow, arriveEvenRow, departingTimeEvenRow,
+                                       landingTimeEvenRow)
+                self.dataListForFlights.append(flightEvenRow)
+
+            i += 1
+
+        self.lastFlightUpdate = datetime.datetime.now()
+        return self.dataListForFlights
+
+        # self.jsonFlights = json.dumps(dataListForFlights) # write to json
+        # return self.jsonFlights
+
+
+"""
+    def scrapeFlights(self, url):
+        """"""
+        A function that extracts flight information.
+        :param url: a link to the website of the flight table.
+        :return: jsonFlights containing flight information.
+        """"""
         self.connect(url)
 
         # The flight table (html) is divided into even and odd rows.
@@ -132,3 +204,5 @@ class WebScraper:
         self.jsonFlights = json.dumps(dataListForFlights) # write to json
         return self.jsonFlights
 
+
+"""
