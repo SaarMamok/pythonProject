@@ -1,16 +1,22 @@
 import json
 
+def words_in_web_contents(webContents, words):
+    webContentsResults = []
+    for webContent in webContents:
+        if webContent.include(words):
+            webContentsResults.append(webContent)
 
-def search_words_in_articles(articlesDictionary):
+    return webContentsResults
+
+
+def search_words_in_articles(articlesDictionary, words):
     """
     A function that searches for words in all saved articles.
     :param articlesDictionary: A dictionary that holds all the saved articles.
     :return: articlesDictionary after filtering the search.
     """
 
-    words = input("Please enter the words you would like to search: ")
     articlesDictionarySearchResult = {}
-    words = words
 
     for article in articlesDictionary.values():
         title = article.get_title()
@@ -19,17 +25,10 @@ def search_words_in_articles(articlesDictionary):
         if words in title or words in link or words in content:
             articlesDictionarySearchResult[article.get_link()] = article
 
-    if len(articlesDictionarySearchResult) == 0:
-        print("The words you entered in the article database do not exist.")
-    else:
-        print("Links to sites where the words you entered appear: ")
-        for article in articlesDictionarySearchResult:
-            print(article)
-
     return articlesDictionarySearchResult
 
 
-def search_words_in_flights(jsonFile):
+def search_words_in_flights(jsonFile, words):
     """
     A search function for words contained in the flight database (json).
     A function that asks the user to enter the words he wants to search for
@@ -39,7 +38,6 @@ def search_words_in_flights(jsonFile):
 
     searchListForFlights = []
     dataFlights = json.loads(jsonFile)
-    words = input("Please enter the words you would like to search: ")
     for flight in dataFlights:
          if ((words in flight['flightNumber']) or
              (words in flight['planeType']) or
@@ -47,12 +45,5 @@ def search_words_in_flights(jsonFile):
              (words in flight['departingTime']) or
              (words in flight['landingTime'])):
              searchListForFlights.append(flight)
-
-    if len(searchListForFlights) == 0:
-        print("The words you entered in the flight database do not exist.")
-    else:
-        print("Flight details that contains the words you searched for: ")
-        for flight in searchListForFlights:
-            print(flight)
 
     return searchListForFlights

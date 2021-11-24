@@ -1,5 +1,6 @@
+from webContent import WebContent
 
-class Article:
+class Article(WebContent):
     title = None
     link = None
     content = None
@@ -18,12 +19,5 @@ class Article:
     def get_content(self):
         return self.content
 
-    def set_title(self, title):
-        self.title = title
-
-    def set_link(self, link):
-        self.link = link
-
-    def set_content(self, content):
-        self.content = content
-
+    def include(self, words):
+        return words in " ".join([self.title, self.link, self.content])

@@ -12,5 +12,12 @@ scraper = WebScraper()
 
 while True: # every one minute the json file is updated.
     jsonFlights = scraper.scrapeFlights(url)
-    searchWordsInFlights = search.search_words_in_flights(jsonFlights)
+    words = input("Please enter the words you would like to search: ")
+    searchWordsInFlights = search.words_in_web_contents(jsonFlights, words)
+    if len(searchWordsInFlights) == 0:
+        print("The words you entered in the flight database do not exist.")
+    else:
+        print("Flight details that contains the words you searched for: ")
+        for flight in searchWordsInFlights:
+            print(flight)
     sleep(60)
