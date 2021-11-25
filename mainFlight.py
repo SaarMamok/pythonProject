@@ -1,5 +1,4 @@
 import json
-from time import sleep
 from webScraper import WebScraper
 import search
 
@@ -11,16 +10,16 @@ import search
 url = "https://he.flightaware.com/live/airport/LLBG/arrivals"
 scraper = WebScraper()
 
-while True: # every one minute the json file is updated.
+while True:
     flightsData = scraper.scrapeFlights(url)
 
     dicFlights = [flight.__dict__ for flight in flightsData]
 
     jsonFlights = json.dumps({"results": dicFlights})
 
+    jsonLoadFlights = json.loads(jsonFlights)
 
-    print(jsonFlights)
-    print(flightsData)
+    print(jsonLoadFlights)
 
     words = input("Please enter the words you would like to search: ")
     searchWordsInFlights = search.words_in_web_contents(flightsData, words)
@@ -30,4 +29,4 @@ while True: # every one minute the json file is updated.
         print("Flight details that contains the words you searched for: ")
         for flight in searchWordsInFlights:
             print(flight.to_json())
-    #sleep(60)
+

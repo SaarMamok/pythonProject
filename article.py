@@ -20,4 +20,10 @@ class Article(WebContent):
         return self.content
 
     def include(self, words):
+        """
+        Turns a article data containing words into one string.
+        :param words: Words you would like to search for.
+        :return: string that contains all the article data.
+        """
+
         return words in " ".join([self.title, self.link, self.content])
