@@ -17,16 +17,15 @@ while True:
 
     jsonFlights = json.dumps({"results": dicFlights})
 
-    jsonLoadFlights = json.loads(jsonFlights)
+    print("\nAll flights data: ")
+    print(dicFlights)
 
-    print(jsonLoadFlights)
-
-    words = input("Please enter the words you would like to search: ")
+    words = input("\nPlease enter the words you would like to search: ")
     searchWordsInFlights = search.words_in_web_contents(flightsData, words)
     if len(searchWordsInFlights) == 0:
-        print("The words you entered in the flight database do not exist.")
+        print("\nThe words you entered in the flight database do not exist.")
     else:
-        print("Flight details that contains the words you searched for: ")
+        print("\nFlight details that contains the words you searched for: ")
         for flight in searchWordsInFlights:
-            print(flight.to_json())
+            print(flight.__dict__)
 
